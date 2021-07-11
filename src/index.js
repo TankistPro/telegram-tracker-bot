@@ -1,19 +1,23 @@
 require('dotenv').config();
+const { Telegraf, Scenes, session } = require('telegraf');
 
-const { Telegraf, Scenes: { BaseScene, Stage } } = require('telegraf');
-const bot = new Telegraf(process.env.BOT_ACCESS_TOKEN);
-
-const loginActions = require('./actions/loginActions');
-
-const { createRandomKey } = require('./utils/getRandomCode')
 const { logInKeyBoard } = require('./utils/keyBoards');
 
-bot.start((ctx) => ctx.telegram.sendMessage(ctx.from.id, "Привет, я трекер-бот. Нажми «Войти», чтобы авторизоваться в системе.", logInKeyBoard));
+const loginScene = require('./scenes/logInScene').loginScene;
 
-bot.action('LogIn', ctx => loginActions.logIn(ctx));
+const authHandler = require('./handler/authHandler');
 
-bot.command('/regme', (ctx) => {
-    const authCode = createRandomKey();
-    ctx.reply(`${ ctx.from.username }, твой код для авторизации в системе: ${ authCode }.`)
-})
+const bot = new Telegraf(process.env.BOT_ACCESS_TOKEN);
+
+const stage = new Scenes.Stage([ loginScene ]);
+bot.use(session());
+bot.use(stage.middleware());
+
+bot.start(async (ctx) => {
+    ctx.reply("Привет, я трекер-бот. Нажми «Войти», чтобы авторизоваться в системе.", logInKeyBoard)
+});
+
+bot.action('logIn', async (ctx) => authHandler.logIn(ctx));
+bot.action('signIn', ctx => authHandler.signIn(ctx) )
+
 bot.launch();
