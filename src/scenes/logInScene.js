@@ -9,7 +9,7 @@ const inputCode = async (ctx) => {
 
 const checkCode = async (ctx) => {
     const existUser = await userModel.findOne({id_user: ctx.from.id});
-    console.log(existUser.authCode)
+    
     if (ctx.message.text == existUser.authCode) {
         ctx.reply("Вы успешно авторизировались");
         return ctx.scene.leave();
