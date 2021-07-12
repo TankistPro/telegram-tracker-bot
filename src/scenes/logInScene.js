@@ -1,16 +1,21 @@
+const { userModel } = require('../db/models/userModel');
 const { Scenes  } = require('telegraf');
 
 const inputCode = async (ctx) => {
-    await ctx.updateType("Введите 6-ый код:");
+    await ctx.reply("Введите 6-ый код:");
 
     return ctx.wizard.next();
 }
 
 const checkCode = async (ctx) => {
-    if (ctx.message.text === 'admin')
+    const existUser = await userModel.findOne({id_user: ctx.from.id});
+    console.log(existUser.authCode)
+    if (ctx.message.text == existUser.authCode) {
+        ctx.reply("Вы успешно авторизировались");
         return ctx.scene.leave();
+    }
 
-    await ctx.editedMessage("Упс...🥺Код неверный⛔")
+    ctx.reply("Упс...🥺Код неверный⛔. Попробуте снова!")
 }
 
 module.exports.loginScene = new Scenes.WizardScene('loginScene', inputCode, checkCode);

@@ -1,6 +1,8 @@
 require('dotenv').config();
 const { Telegraf, Scenes, session } = require('telegraf');
 
+const mongoDB = require('./db/connect');
+
 const { logInKeyBoard } = require('./utils/keyBoards');
 
 const loginScene = require('./scenes/logInScene').loginScene;
@@ -18,6 +20,12 @@ bot.start(async (ctx) => {
 });
 
 bot.action('logIn', async (ctx) => authHandler.logIn(ctx));
-bot.action('signIn', ctx => authHandler.signIn(ctx) )
+bot.action('signIn', async (ctx) => authHandler.signIn(ctx));
 
-bot.launch();
+mongoDB.connectDB().then(res => {
+    bot.launch().then(res => {
+        console.log("[OK] Bot started succesfully!");
+    }).catch(err => {
+        console.log("[ERROR] Error started Bot!");
+    });
+});
