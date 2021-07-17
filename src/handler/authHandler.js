@@ -1,12 +1,15 @@
-const {userModel} = require('../db/models/userModel');
+const { userModel } = require('../db/models/userModel');
 const { createRandomKey } = require('../utils/getRandomCode');
 
 module.exports.logIn = (ctx) => {
+    ctx.answerCbQuery()
+
     ctx.scene.enter('loginScene');
 }
 
 module.exports.signIn = async (ctx) => {
     const existUser = await userModel.findOne({id_user: ctx.from.id});
+    
     if(!existUser) {
         const authCode = createRandomKey();
 
@@ -26,6 +29,6 @@ module.exports.signIn = async (ctx) => {
     
         ctx.reply(`${ ctx.from.username }, твой код для авторизации в системе: ${ authCode }.`);
     } else {
-        ctx.reply(`${ ctx.from.username }, по нашим данным, у вас уже имеется ключ для авторизации.`);
+        ctx.reply(`${ ctx.from.username }, по нашим данным у вас уже имеется ключ для авторизации.`);
     }
 }

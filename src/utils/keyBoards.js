@@ -7,11 +7,8 @@ module.exports.logInKeyBoard = Markup.inlineKeyboard([
 
 module.exports.workingPlaceBoard = Markup.inlineKeyboard([
     [
-        Markup.button.callback('▶', 'startTimer'),
-        Markup.button.callback('⏸', 'pauseTimer'),
-        Markup.button.callback('⏯', 'stopTimer'),
-    ],
-    [
-        Markup.button.callback('↕ Расширенная статистика', 'extendStatistic')
+        Markup.button.callback("▶", "startTimer"),
+        Markup.button.callback("⏸", "pauseTimer"),
+        Markup.button.callback("⏯", "stopTimer"),
     ]
 ]);
