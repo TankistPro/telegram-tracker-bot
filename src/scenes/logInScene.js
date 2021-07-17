@@ -13,9 +13,11 @@ const checkCode = async (ctx) => {
     const existUser = await userModel.findOne({id_user: ctx.from.id});
 
     if (ctx.message.text == existUser.authCode) {
-        // ctx.session.username = existUser.userName;
+        const userData = await userModel.findOne({id_user: ctx.from.id});
+        ctx.session.userData = userData;
 
-        ctx.reply(messageList.DEFAULT_MENU(ctx.from.username), workingPlaceBoard);
+        ctx.reply(messageList.DEFAULT_MENU(ctx.session.userData), workingPlaceBoard);
+        
         return ctx.scene.leave()
     }
     
