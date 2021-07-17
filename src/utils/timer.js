@@ -6,17 +6,15 @@ class Timer {
     }
     
     startWork(){
-        setInterval(() => {
-            if(this.seconds < 60) {
-                this.seconds++;
-            } else {
-                this.seconds = 0;
-                this.minutes++;
-            }
-            if(this.minutes === 60) {
-                this.hours++;
-            }
-        }, 1000)
+        if(this.seconds < 60) {
+            this.seconds++;
+        } else {
+            this.seconds = 0;
+            this.minutes++;
+        }
+        if(this.minutes === 60) {
+            this.hours++;
+        }
 
         return `${this.hours}:${this.minutes < 10 ? "0" + this.minutes : this.minutes}:${this.seconds < 10 ? "0" + this.seconds: this.seconds}`
     }

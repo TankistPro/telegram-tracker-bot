@@ -8,7 +8,7 @@ module.exports.DEFAULT_MENU = (userData) => {
 `
 }
 
-module.exports.WORKING_MENU = (userData, displayTimer) => {
+module.exports.WORKING_MENU = (userData, timer) => {
     return `
 🤘Добро пожаловать ${userData.userName}! 
 
@@ -16,7 +16,7 @@ module.exports.WORKING_MENU = (userData, displayTimer) => {
 🤛Отработано (за неделю): ${userData.timeWeek}ч.
 💪Отработано (за месяц): ${userData.timeMonth}ч.
     
-🧠Вы работаете: ${displayTimer}.
+🧠Вы работаете: ${timer.startWork()}.
 `
 }
 
