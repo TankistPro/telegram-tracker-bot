@@ -1,7 +1,7 @@
 class Timer {
     constructor() {
-        this.seconds = 50;
-        this.minutes = 59;
+        this.seconds = 0;
+        this.minutes = 0;
         this.hours = 0;
     }
     
