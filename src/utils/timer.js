@@ -1,8 +1,10 @@
+const { statistics } = require('./statisctics');
+
 class Timer {
     constructor() {
-        this.seconds = 0;
-        this.minutes = 0;
-        this.hours = 0;
+        this.seconds = 54;
+        this.minutes = 23;
+        this.hours = 5;
     }
     
     timeFormat(time) {
@@ -32,8 +34,10 @@ class Timer {
         return timerID = -1;
     }
 
-    stopTimer(timerID) {
+    async stopTimer(timerID, userData) {
         clearInterval(timerID);
+
+        await statistics.saveWorkingTime(userData, this.hours, this.minutes, this.seconds);
 
         this.seconds = 0;
         this.minutes = 0;

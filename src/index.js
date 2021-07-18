@@ -24,13 +24,11 @@ bot.action('signIn', async (ctx) => authHandler.signIn(ctx));
 
 bot.action('startTimer', async (ctx) => timehandler.startTimer(ctx));
 bot.action('pauseTimer',async (ctx) => timehandler.pauseTimer(ctx));
-bot.action('stopTimer',async (ctx) => timehandler.stopTimer(ctx))
+bot.action('stopTimer',async (ctx) => timehandler.stopTimer(ctx));
+bot.action('updateStatistics', async (ctx) => timehandler.updateStatistics(ctx));
 
 mongoDB.connectDB().then(res => {
-    bot.launch({
-        port: process.env.PORT,
-        host: '0.0.0.0'
-    }).then(res => {
+    bot.launch().then(res => {
         console.log("[OK] Bot started succesfully!");
     }).catch(err => {
         console.log("[ERROR] Error started Bot!");

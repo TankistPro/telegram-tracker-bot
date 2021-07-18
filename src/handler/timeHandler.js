@@ -1,7 +1,8 @@
 const messages = require('../messages/working');
 
+
 const { workingPlaceBoard } = require('../utils/keyBoards');
-const { userModel } = require('../db/models/userModel');
+const { statistics } = require('../utils/statisctics');
 const { timer } = require('../utils/timer');
 
 let timerID = -1
@@ -11,17 +12,23 @@ module.exports.startTimer = async(ctx) => {
         ctx.editMessageText(messages.WORKING_MENU(ctx.session.userData, timer.startWork()), workingPlaceBoard);
     }, 1000)
 
-    await ctx.answerCbQuery('Вы начали работать');
+    ctx.answerCbQuery('Вы начали работать');
 }
 
 module.exports.pauseTimer = async(ctx) => {
     timerID = timer.pauseWork(timerID);
-    await ctx.editMessageText(messages.PAUSE_MENU(ctx.session.userData, timer.displayTimer()), workingPlaceBoard);
-    await ctx.answerCbQuery('Таймер на паузе');
+    ctx.editMessageText(messages.PAUSE_MENU(ctx.session.userData, timer.displayTimer()), workingPlaceBoard);
+    ctx.answerCbQuery('Таймер на паузе');
 }
 
 module.exports.stopTimer = async(ctx) => {
-    timerID = timer.stopTimer(timerID);
-    await ctx.editMessageText(messages.DEFAULT_MENU(ctx.session.userData), workingPlaceBoard);
-    await ctx.answerCbQuery('Вы закончили работать');
+    timerID = await timer.stopTimer(timerID, ctx.session.userData);
+    ctx.editMessageText(messages.DEFAULT_MENU(ctx.session.userData), workingPlaceBoard);
+    ctx.answerCbQuery('Вы закончили работать');
+}
+
+module.exports.updateStatistics = async(ctx) => {
+    await statistics.updateUserStatistics(ctx);
+    ctx.editMessageText(messages.DEFAULT_MENU(ctx.session.userData), workingPlaceBoard);
+    ctx.answerCbQuery('Статистика успешно обновлена');
 }
