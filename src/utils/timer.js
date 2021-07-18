@@ -2,9 +2,9 @@ const { statistics } = require('./statisctics');
 
 class Timer {
     constructor() {
-        this.seconds = 54;
-        this.minutes = 23;
-        this.hours = 5;
+        this.seconds = 0;
+        this.minutes = 0;
+        this.hours = 0;
     }
     
     timeFormat(time) {
