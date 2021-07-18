@@ -7,7 +7,7 @@ class Statistics {
         await userModel.updateOne({id_user: userData.id_user}, { $set: {
             timeDay: (userData.timeDay + workedHours).toFixed(1),
             timeWeek: (userData.timeWeek + workedHours).toFixed(1),
-            timeMounth: (userData.timeMounth + workedHours).toFixed(1)
+            timeMonth: (userData.timeMonth + workedHours).toFixed(1)
          } })
     }
 
