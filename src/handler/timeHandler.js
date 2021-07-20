@@ -1,6 +1,5 @@
 const messages = require('../messages/working');
 
-
 const { workingPlaceBoard } = require('../utils/keyBoards');
 const { statistics } = require('../utils/statisctics');
 const { timer } = require('../utils/timer');

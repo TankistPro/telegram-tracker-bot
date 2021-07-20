@@ -1,4 +1,4 @@
-const messageList = require('../messages/working');
+const messages = require('../messages/working');
 
 const { workingPlaceBoard } = require('../utils/keyBoards');
 const { userModel } = require('../db/models/userModel');
@@ -16,7 +16,7 @@ const checkCode = async (ctx) => {
         const userData = await userModel.findOne({id_user: ctx.from.id});
         ctx.session.userData = userData;
 
-        ctx.reply(messageList.DEFAULT_MENU(ctx.session.userData), workingPlaceBoard);
+        ctx.reply(messages.DEFAULT_MENU(ctx.session.userData), workingPlaceBoard);
         
         return ctx.scene.leave()
     }
