@@ -54,6 +54,6 @@ module.exports.stopTimer = async(ctx) => {
 module.exports.updateStatistics = async(ctx) => {
     await statistics.updateUserStatistics(ctx);
     
-    ctx.editMessageText(messages.DEFAULT_MENU(ctx.session.userData), workingPlaceBoard);
+    ctx.editMessageText(messages.DEFAULT_MENU(ctx.session.userData), workingPlaceBoard).catch((err) => {});
     ctx.answerCbQuery('Статистика успешно обновлена');
 }
