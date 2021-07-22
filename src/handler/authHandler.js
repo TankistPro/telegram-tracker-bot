@@ -9,10 +9,10 @@ module.exports.logIn = (ctx) => {
 }
 
 module.exports.signIn = async (ctx) => {
-    // if (state.userID) {
-    //     ctx.answerCbQuery('Вы уже вошли в систему!');
-    //     return;
-    // }
+    if (state.userID) {
+        ctx.answerCbQuery('Вы уже вошли в систему!');
+        return;
+    }
 
     const existUser = await userModel.findOne({id_user: ctx.from.id});
     
