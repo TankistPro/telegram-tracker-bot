@@ -8,7 +8,8 @@ const userModel = new Schema({
     authCode: Number,
     timeDay: Number,
     timeWeek: Number,
-    timeMonth: Number
+    timeMonth: Number,
+    dataAuth: Date
 });
 
 module.exports.userModel = mongoose.model("trackUser", userModel);

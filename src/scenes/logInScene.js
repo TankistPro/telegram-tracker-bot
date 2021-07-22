@@ -13,17 +13,17 @@ const inputCode = async (ctx) => {
 const checkCode = async (ctx) => {
     const existUser = await userModel.findOne({id_user: ctx.from.id});
 
-    if (ctx.message.text == existUser.authCode) {
+    if (ctx.message.text == existUser?.authCode && existUser) {
         const userData = await userModel.findOne({id_user: ctx.from.id});
         state.userID = ctx.from.id;
         ctx.session.userData = userData;
 
         ctx.reply(messages.DEFAULT_MENU(ctx.session.userData), workingPlaceBoard);
-        
-        return ctx.scene.leave()
+    } else {
+        ctx.reply("Упс...🥺Код неверный⛔.");
     }
-    
-    ctx.reply("Упс...🥺Код неверный⛔. Попробуте снова!")
+
+    return ctx.scene.leave()
 }
 
 module.exports.loginScene = new Scenes.WizardScene('loginScene', inputCode, checkCode);

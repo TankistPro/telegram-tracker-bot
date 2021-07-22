@@ -1,5 +1,6 @@
 const { userModel } = require('../db/models/userModel');
 const { createRandomKey } = require('../utils/getRandomCode');
+const { state } = require('../utils/state');
 
 module.exports.logIn = (ctx) => {
     ctx.answerCbQuery()
@@ -8,6 +9,11 @@ module.exports.logIn = (ctx) => {
 }
 
 module.exports.signIn = async (ctx) => {
+    // if (state.userID) {
+    //     ctx.answerCbQuery('Вы уже вошли в систему!');
+    //     return;
+    // }
+
     const existUser = await userModel.findOne({id_user: ctx.from.id});
     
     if(!existUser) {
@@ -20,7 +26,8 @@ module.exports.signIn = async (ctx) => {
             authCode: authCode,
             timeDay: 0,
             timeWeek: 0,
-            timeMonth: 0
+            timeMonth: 0,
+            dataAuth: Date.now()
         })
         
         await newUser.save().then(res => {
