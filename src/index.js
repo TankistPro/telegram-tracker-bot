@@ -8,10 +8,12 @@ const authHandler = require('./handler/authHandler');
 const timehandler = require('./handler/timeHandler');
 
 const { logInKeyBoard } = require('./utils/keyBoards');
+const { isAuth } = require('./middleware/isAuth');
 
 const stage = new Scenes.Stage([ loginScene ]);
-bot.use(session());
 bot.use(stage.middleware());
+bot.use(session());
+bot.use(isAuth);
 
 bot.start(async (ctx) => {
     ctx.reply("Привет, я трекер-бот. Нажми «Войти», чтобы авторизоваться в системе.", logInKeyBoard)

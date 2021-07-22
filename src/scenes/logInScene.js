@@ -3,6 +3,7 @@ const messages = require('../messages/working');
 const { workingPlaceBoard } = require('../utils/keyBoards');
 const { userModel } = require('../db/models/userModel');
 const { Scenes } = require('telegraf');
+const { state } = require('../utils/state');
 
 const inputCode = async (ctx) => {
     await ctx.reply("Введите 6-ый код:");
@@ -14,6 +15,7 @@ const checkCode = async (ctx) => {
 
     if (ctx.message.text == existUser.authCode) {
         const userData = await userModel.findOne({id_user: ctx.from.id});
+        state.userID = ctx.from.id;
         ctx.session.userData = userData;
 
         ctx.reply(messages.DEFAULT_MENU(ctx.session.userData), workingPlaceBoard);
