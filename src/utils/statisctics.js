@@ -16,6 +16,25 @@ class Statistics {
         
         ctx.session.userData = userData;
     }
+
+    async updatePeriod (ctx) {
+        const userID = ctx.session.userData.id_user;
+        setInterval(async () => {
+            await userModel.updateOne({id_user: userID}, { $set: {
+                timeDay: 0
+            } })
+
+            console.log("Таймер дня обновился")
+        }, 3600000 * 24);
+   
+        setInterval(async () => {
+            await userModel.updateOne({id_user: userID}, { $set: {
+                timeWeek: 0
+            } })
+
+            console.log("Таймер недели обновился")
+        }, 3600000 * 24 * 7);
+    }
 }
 
 module.exports.statistics = new Statistics();

@@ -1,6 +1,5 @@
 const { userModel } = require('../db/models/userModel');
 const { createRandomKey } = require('../utils/getRandomCode');
-const { state } = require('../utils/state');
 
 module.exports.logIn = (ctx) => {
     ctx.answerCbQuery()

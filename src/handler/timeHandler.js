@@ -9,6 +9,7 @@ let isWorking = false;
 let isPause = false;
 
 module.exports.startTimer = async(ctx) => {
+    console.log(statistics.updatePeriod(ctx));
     if (isWorking) {
         ctx.answerCbQuery('Вы уже работаете');
         return;
