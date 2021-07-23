@@ -16,6 +16,7 @@ module.exports.startTimer = async(ctx) => {
     isWorking = true;
     isPause = false;
 
+    ctx.editMessageText(messages.WORKING_MENU(ctx.session.userData, timer.startWork()), workingPlaceBoard);
     timerID = setInterval(() => {
         ctx.editMessageText(messages.WORKING_MENU(ctx.session.userData, timer.startWork()), workingPlaceBoard);
     }, 1000)

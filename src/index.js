@@ -8,19 +8,19 @@ const authHandler = require('./handler/authHandler');
 const timehandler = require('./handler/timeHandler');
 
 const { logInKeyBoard } = require('./utils/keyBoards');
-const { isAuth } = require('./middleware/isAuth');
+const { updateDate, isAuth } = require('./middleware/middleware');
 
 const stage = new Scenes.Stage([ loginScene ]);
 bot.use(session());
-bot.use(isAuth);
+bot.use(updateDate);
 bot.use(stage.middleware());
 
 bot.start(async (ctx) => {
     ctx.reply("Привет, я трекер-бот. Нажми «Войти», чтобы авторизоваться в системе.", logInKeyBoard)
 });
 
-bot.action('logIn', async (ctx) => authHandler.logIn(ctx));
-bot.action('signIn', async (ctx) => authHandler.signIn(ctx));
+bot.action('logIn', isAuth,async (ctx) => authHandler.logIn(ctx));
+bot.action('signIn', isAuth,async (ctx) => authHandler.signIn(ctx));
 
 bot.action('startTimer', async (ctx) => timehandler.startTimer(ctx));
 bot.action('pauseTimer',async (ctx) => timehandler.pauseTimer(ctx));
