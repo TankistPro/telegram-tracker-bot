@@ -27,6 +27,9 @@ bot.action('pauseTimer',async (ctx) => timehandler.pauseTimer(ctx));
 bot.action('stopTimer',async (ctx) => timehandler.stopTimer(ctx));
 bot.action('updateStatistics', async (ctx) => timehandler.updateStatistics(ctx));
 
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
 mongoDB.connectDB().then(res => {
     bot.launch().then(res => {
         console.log("[OK] Bot started succesfully!");
