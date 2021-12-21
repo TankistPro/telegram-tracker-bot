@@ -1,3 +1,5 @@
+const { timer } = require('../utils/timer')
+
 module.exports.DEFAULT_MENU = (userData) => {
     return `
 🤘 Добро пожаловать ${userData.userName}!
@@ -24,7 +26,7 @@ module.exports.WORKING_MENU = (userData, timer) => {
 `
 }
 
-module.exports.PAUSE_MENU = (userData, timer) => {
+module.exports.PAUSE_MENU = (userData, workerTimer) => {
     return `
 🤘 Добро пожаловать ${userData.userName}! 
 
@@ -35,7 +37,7 @@ module.exports.PAUSE_MENU = (userData, timer) => {
 Чтобы начать или продолжить работать нажмите ▶.
 
 ⌛ Таймер на паузе.
-🧠 Отработано: ${timer}.
+🧠 Отработано: ${timer.timeFormat(workerTimer.hours)}:${timer.timeFormat(workerTimer.minutes)}:${timer.timeFormat(workerTimer.seconds)}.
 `
 }
 

@@ -6,9 +6,12 @@ const userModel = new Schema({
     fisrtName: String,
     userName: String,
     authCode: Number,
+    isWorking: Boolean,
+    isPause: Boolean,
     timeDay: Number,
     timeWeek: Number,
     timeMonth: Number,
+    timer: Object,
     dataAuth: Date
 });
 

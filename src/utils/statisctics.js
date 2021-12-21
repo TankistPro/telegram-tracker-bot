@@ -11,7 +11,7 @@ class Statistics {
          } })
     }
 
-    async updateUserStatistics (ctx) {
+    async updateUserStatistics (worker) {
         const userData = await userModel.findOne({id_user: ctx.from.id});
         
         ctx.session.userData = userData;

@@ -1,61 +1,74 @@
 const messages = require('../messages/working');
 
 const { workingPlaceBoard } = require('../utils/keyBoards');
-const { statistics } = require('../utils/statisctics');
+const { Worker } = require('../utils/Worker');
 const { timer } = require('../utils/timer');
 
-let timerID = -1
-let isWorking = false;
-let isPause = false;
+const { state } = require('../state');
 
 module.exports.startTimer = async(ctx) => {
-    console.log(statistics.updatePeriod(ctx));
-    if (isWorking) {
+    const user_id = ctx.from.id;
+    const worker = await Worker.getWorkerById(user_id);
+
+    if (worker.isWorking) {
         ctx.answerCbQuery('Вы уже работаете');
         return;
     }
-    isWorking = true;
-    isPause = false;
 
-    ctx.editMessageText(messages.WORKING_MENU(ctx.session.userData, timer.startWork()), workingPlaceBoard);
-    timerID = setInterval(() => {
-        ctx.editMessageText(messages.WORKING_MENU(ctx.session.userData, timer.startWork()), workingPlaceBoard);
+    await Worker.startWorking(worker);
+
+    ctx.editMessageText(messages.WORKING_MENU(worker, timer.startWork(worker)), workingPlaceBoard);
+    
+    const timerId = setInterval(() => {
+        ctx.editMessageText(messages.WORKING_MENU(worker, timer.startWork(worker)), workingPlaceBoard);
     }, 1000)
+
+    state.setTimerId(worker.id_user, timerId);
 
     ctx.answerCbQuery('Вы начали работать');
 }
 
 module.exports.pauseTimer = async(ctx) => {
-    if (!isWorking) {
+    const user_id = ctx.from.id;
+    const worker = await Worker.getWorkerById(user_id);
+
+    if (!worker.isWorking) {
         ctx.answerCbQuery('Вы не начинали работать');
         return;
     }
-    isWorking = false;
-    isPause = true;
 
-    timerID = timer.pauseWork(timerID);
-    ctx.editMessageText(messages.PAUSE_MENU(ctx.session.userData, timer.displayTimer()), workingPlaceBoard);
+    await Worker.userPauseWorking(worker);
+
+    timer.pauseWork(worker);
+
+    const time = state.getStateTimer(worker.id_user)
+
+    ctx.editMessageText(messages.PAUSE_MENU(worker, time), workingPlaceBoard);
     ctx.answerCbQuery('Таймер на паузе');
 }
 
 module.exports.stopTimer = async(ctx) => {
-    if (!isWorking && !isPause) {
+    const user_id = ctx.from.id;
+    const worker = await Worker.getWorkerById(user_id);
+
+    if (!worker.isWorking && !worker.isPause) {
         ctx.answerCbQuery('Вы не начинали работать');
         return;
     }
-    if (isWorking) timerID = timer.pauseWork(timerID);
+    if (worker.isWorking) timer.pauseWork(worker);
 
-    isWorking = false;
-    isPause = false;
+    await Worker.userStopWorking(worker);
 
-    timerID = await timer.stopTimer(timerID, ctx.session.userData);
-    ctx.editMessageText(messages.DEFAULT_MENU(ctx.session.userData), workingPlaceBoard);
+    await timer.stopTimer(worker);
+
+    ctx.editMessageText(messages.DEFAULT_MENU(worker), workingPlaceBoard);
     ctx.answerCbQuery('Вы закончили работать');
 }
 
 module.exports.updateStatistics = async(ctx) => {
-    await statistics.updateUserStatistics(ctx);
+    const user_id = ctx.from.id;
+    const worker = await Worker.getWorkerById(user_id);
     
-    ctx.editMessageText(messages.DEFAULT_MENU(ctx.session.userData), workingPlaceBoard).catch((err) => {});
+    ctx.editMessageText(messages.DEFAULT_MENU(worker), workingPlaceBoard).catch((err) => {});
     ctx.answerCbQuery('Статистика успешно обновлена');
 }
