@@ -7,7 +7,7 @@ class State {
         this.state[key] = {
             timer: {
                 hours: 0,
-                minutes: 20,
+                minutes: 0,
                 seconds: 0,
                 timerID: null,
             }
