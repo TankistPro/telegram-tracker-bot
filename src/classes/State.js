@@ -20,8 +20,6 @@ class State {
         timer.timer.timerID = value
 
         this.state[key] = timer
-
-        console.log(timer)
     }
 
     clearTimerId (key) {
@@ -32,8 +30,6 @@ class State {
         timer.timer.timerID = null;
 
         this.state[key] = timer
-
-        console.log(timer)
     }
 
     removeFromState(key) {
@@ -45,7 +41,7 @@ class State {
     }
 
     getStateTimer(key) {
-        return this.state[key]['timer'];
+        return this.state[key].timer;
     }
 }
 

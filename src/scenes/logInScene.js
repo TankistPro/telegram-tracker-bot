@@ -3,8 +3,8 @@ const messages = require('../messages/working');
 const { workingPlaceBoard } = require('../utils/keyBoards');
 const { userModel } = require('../db/models/userModel');
 const { Scenes } = require('telegraf');
-const { statistics } = require('../utils/statisctics');
-const { state } = require('../state');
+const { Worker } = require('../classes/Worker');
+
 
 const inputCode = async (ctx) => {
     await ctx.reply("Введите 6-ый код:");
@@ -17,7 +17,7 @@ const checkCode = async (ctx) => {
     if (ctx.message.text == existUser?.authCode && existUser) {
         const worker = await userModel.findOne({id_user: ctx.from.id});
         
-        state.addToState(worker.id_user)
+        Worker.addWorker(worker);
 
         ctx.telegram.sendMessage(ctx.message.chat.id, messages.DEFAULT_MENU(worker), workingPlaceBoard);
     } else {

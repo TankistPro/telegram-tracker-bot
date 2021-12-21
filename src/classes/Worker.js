@@ -1,15 +1,19 @@
 const { userModel } = require('../db/models/userModel');
 const { createRandomKey } = require('../utils/getRandomCode');
-const { timer } = require('./timer');
+const { timer } = require('../classes/Timer');
+
+const { state } = require('../classes/State');
 
 class Worker {
     async getWorkerById (id) {
-        const worker = await userModel.findOne({ id_user: id })
+        const worker = await userModel.findOne({ id_user: id });
+
         return worker;
     }
 
-    async addWorker (ctx) {
+    async createWorker (ctx) {
         const authCode = createRandomKey();
+
         const model = {
             id_user: ctx.from.id,
             fisrtName: ctx.from.fisrt_name,
@@ -28,36 +32,48 @@ class Worker {
             isPause: false
         }
 
-        const newWorker = new userModel(model)
-
+        const newWorker = new userModel(model);
+            
         await newWorker.save().then(res => {
-            console.log("[OK] Пользователь успешно добавлен")
+            console.log("[OK] Пользователь успешно добавлен");
         })
 
-        console.log(id_user)
+        state.addToState(model.id_user);
 
         return {
-            id_user,
+            id_user: model.id_user,
             authCode
         }
     }
 
-    async startWorking (worker) {
+    addWorker (worker) {
+        state.addToState(worker.id_user);
+
+        console.log(state);
+    }
+
+    async startWorking (worker, timerId) {
         await userModel.updateOne({ id_user: worker.id_user }, { 
             $set: { isWorking: true, isPause: false }
         })
+
+        state.setTimerId(worker.id_user, timerId);
     }
 
-    async userPauseWorking (worker) {
+    async pauseWorking (worker) {
         await userModel.updateOne({ id_user: worker.id_user }, { 
             $set: { isWorking: false, isPause: true }
         })
+
+        // timer.pauseWork(worker);
     }
 
-    async userStopWorking (worker) {
+    async stopWorking (worker) {
         await userModel.updateOne({ id_user: worker.id_user }, { 
             $set: { isWorking: false, isPause: false }
         })
+
+        await timer.stopTimer(worker);
     }
 }
 

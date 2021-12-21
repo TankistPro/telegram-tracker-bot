@@ -1,5 +1,5 @@
-const { statistics } = require('./statisctics');
-const { state } = require('../state');
+const { statistics } = require('./Statisctics');
+const { state } = require('../classes/State');
 
 class Timer {    
     timeFormat(time) {
@@ -28,7 +28,7 @@ class Timer {
     }
 
     pauseWork(worker) {
-        const timer = state.getStateTimer(worker.id_user)
+        const timer = state.getStateTimer(worker.id_user);
 
         if(timer.timerID !== -1) clearInterval(timer.timerID);
         return state.setTimerId(worker.id_user, -1);
@@ -36,9 +36,9 @@ class Timer {
 
     async stopTimer(worker) {
         state.clearTimerId(worker.id_user);
-        const timer = state.getStateTimer(worker.id_user)
+        const timer = state.getStateTimer(worker.id_user);
 
-        state.restoreTimer(worker.id_user)
+        state.restoreTimer(worker.id_user);
 
         await statistics.saveWorkingTime(worker, timer.hours, timer.minutes, timer.seconds);
     }

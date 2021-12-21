@@ -11,7 +11,6 @@ const userModel = new Schema({
     timeDay: Number,
     timeWeek: Number,
     timeMonth: Number,
-    timer: Object,
     dataAuth: Date
 });
 

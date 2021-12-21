@@ -1,4 +1,4 @@
-const { timer } = require('../utils/timer')
+const { timer } = require('../classes/Timer')
 
 module.exports.DEFAULT_MENU = (userData) => {
     return `
