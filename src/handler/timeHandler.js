@@ -23,8 +23,6 @@ module.exports.startTimer = async(ctx) => {
 
     await Worker.startWorking(worker, timerId);
 
-    // state.setTimerId(worker.id_user, timerId);
-
     ctx.answerCbQuery('Вы начали работать');
 }
 
@@ -38,8 +36,6 @@ module.exports.pauseTimer = async(ctx) => {
     }
 
     await Worker.pauseWorking(worker);
-
-    timer.pauseWork(worker);
 
     const time = state.getStateTimer(worker.id_user)
 

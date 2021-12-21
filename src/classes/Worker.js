@@ -65,7 +65,7 @@ class Worker {
             $set: { isWorking: false, isPause: true }
         })
 
-        // timer.pauseWork(worker);
+        timer.pauseWork(worker);
     }
 
     async stopWorking (worker) {
