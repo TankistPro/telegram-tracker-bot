@@ -13,8 +13,8 @@ module.exports.signIn = async (ctx) => {
     if(!existUser) {
         const { authCode } = await Worker.createWorker(ctx);
     
-        ctx.reply(`${ ctx.from.username }, твой код для авторизации в системе: ${ authCode }.`);
+        ctx.reply(`${ ctx.from.username || ctx.from.first_name }, твой код для авторизации в системе: ${ authCode }.`);
     } else {
-        ctx.reply(`${ ctx.from.username }, по нашим данным у вас уже имеется ключ для авторизации.`);
+        ctx.reply(`${ ctx.from.username || ctx.from.first_name }, по нашим данным у вас уже имеется ключ для авторизации.`);
     }
 }

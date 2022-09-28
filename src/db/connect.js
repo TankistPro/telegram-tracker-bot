@@ -12,6 +12,7 @@ module.exports.connectDB = () => {
         }).catch(err => {
             reject()
             console.log("[ERROR] Error connecting to DataBase!");
+            console.log(err);
         })
     })
 };

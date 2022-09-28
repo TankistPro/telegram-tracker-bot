@@ -15,21 +15,21 @@ class State {
     }
 
     setTimerId (key, value) {
-        const timer = this.state[key];
+        const timer = this.getStateTimer(key);
 
-        timer.timer.timerID = value
+        timer.timerID = value
 
-        this.state[key] = timer
+        this.state[key].timer = timer
     }
 
     clearTimerId (key) {
-        const timer = this.state[key];
+        const timer = this.getStateTimer(key);
 
-        clearInterval(timer.timer.timerID)
+        clearInterval(timer.timerID)
 
-        timer.timer.timerID = null;
+        timer.timerID = null;
 
-        this.state[key] = timer
+        this.state[key].timer = timer
     }
 
     removeFromState(key) {
@@ -41,6 +41,12 @@ class State {
     }
 
     getStateTimer(key) {
+        const timer = this.state[key]?.timer;
+        
+        if (!timer) {
+            this.addToState(key);
+        }
+
         return this.state[key].timer;
     }
 }

@@ -16,7 +16,7 @@ class Worker {
 
         const model = {
             id_user: ctx.from.id,
-            fisrtName: ctx.from.fisrt_name,
+            fisrtName: ctx.from.first_name,
             userName: ctx.from.username,
             authCode: authCode,
             timeDay: 0,

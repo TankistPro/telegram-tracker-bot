@@ -2,7 +2,7 @@ const { timer } = require('../classes/Timer')
 
 module.exports.DEFAULT_MENU = (userData) => {
     return `
-🤘 Добро пожаловать ${userData.userName}!
+🤘 Добро пожаловать ${userData.userName || userData.fisrtName}!
 
 ⏱ За работой (сегодня): ${userData.timeDay}ч.
 ⏱ Отработано (за неделю): ${userData.timeWeek}ч.
@@ -14,7 +14,7 @@ module.exports.DEFAULT_MENU = (userData) => {
 
 module.exports.WORKING_MENU = (userData, timer) => {
     return `
-🤘 Добро пожаловать ${userData.userName}! 
+🤘 Добро пожаловать ${userData.userName || userData.fisrtName}! 
 
 ⏱ За работой (сегодня): ${userData.timeDay}ч.
 ⏱ Отработано (за неделю): ${userData.timeWeek}ч.
@@ -28,7 +28,7 @@ module.exports.WORKING_MENU = (userData, timer) => {
 
 module.exports.PAUSE_MENU = (userData, workerTimer) => {
     return `
-🤘 Добро пожаловать ${userData.userName}! 
+🤘 Добро пожаловать ${userData.userName || userData.fisrtName}! 
 
 ⏱ За работой (сегодня): ${userData.timeDay}ч.
 ⏱ Отработано (за неделю): ${userData.timeWeek}ч.
