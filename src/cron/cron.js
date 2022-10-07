@@ -13,6 +13,30 @@ const dayJob = new cronJob(
     'Europe/Moscow'
 )
 
+const weekJob = new cronJob(
+    '00 00 00 * * 1',
+    async function () {
+        await statistics.resetWeekTime();
+        console.log('Выполнено обнуление часов за неделю!');
+	},
+    null,
+    false,
+    'Europe/Moscow'
+)
+
+const monthJob = new cronJob(
+    '00 00 00 1 * *',
+    async function () {
+        await statistics.resetMonthTime();
+        console.log('Выполнено обнуление часов за неделю!');
+	},
+    null,
+    false,
+    'Europe/Moscow'
+)
+
 module.exports = {
-    dayJob
+    dayJob,
+    weekJob,
+    monthJob
 }

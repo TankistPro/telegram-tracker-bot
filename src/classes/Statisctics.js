@@ -18,6 +18,20 @@ class Statistics {
          } 
         });
     }
+
+    async resetWeekTime() {
+        await userModel.updateMany({}, { $set: {
+            timeWeek: 0,
+         } 
+        });
+    }
+
+    async resetMonthTime() {
+        await userModel.updateMany({}, { $set: {
+            timeMonth: 0,
+         } 
+        });
+    }
 }
 
 module.exports.statistics = new Statistics();
