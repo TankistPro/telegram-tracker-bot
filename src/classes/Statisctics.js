@@ -8,7 +8,15 @@ class Statistics {
             timeDay: (userData.timeDay + workedHours).toFixed(1),
             timeWeek: (userData.timeWeek + workedHours).toFixed(1),
             timeMonth: (userData.timeMonth + workedHours).toFixed(1)
-         } });
+         } 
+        });
+    }
+
+    async resetDayTime() {
+        await userModel.updateMany({}, { $set: {
+            timeDay: 0,
+         } 
+        });
     }
 }
 

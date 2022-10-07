@@ -7,6 +7,8 @@ const loginScene = require('./scenes/logInScene').loginScene;
 const authHandler = require('./handler/authHandler');
 const timehandler = require('./handler/timeHandler');
 
+const { dayJob }= require('./cron/cron');
+
 const { logInKeyBoard } = require('./utils/keyBoards');
 
 const stage = new Scenes.Stage([ loginScene ]);
@@ -32,6 +34,7 @@ process.once('SIGTERM', () => bot.stop('SIGTERM'));
 mongoDB.connectDB().then(res => {
     bot.launch().then(res => {
         console.log("[OK] Bot started succesfully!");
+        dayJob.start();
     }).catch(err => {
         console.log("[ERROR] Error started Bot!");
     });
