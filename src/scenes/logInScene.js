@@ -12,19 +12,21 @@ const inputCode = async (ctx) => {
 }
 
 const checkCode = async (ctx) => {
-    const existUser = await userModel.findOne({id_user: ctx.from.id});
+    try {
+        const existUser = await userModel.findOne({id_user: ctx.from.id});
 
-    if (ctx.message.text == existUser?.authCode && existUser) {
-        const worker = await userModel.findOne({id_user: ctx.from.id});
-        
-        Worker.addWorker(worker);
+        if (ctx.message.text == existUser?.authCode && existUser) {
+            const worker = await userModel.findOne({id_user: ctx.from.id});
 
-        ctx.telegram.sendMessage(ctx.message.chat.id, messages.DEFAULT_MENU(worker), workingPlaceBoard);
-    } else {
-        ctx.telegram.sendMessage(ctx.message.chat.id, "Упс...🥺Код неверный⛔.");
+            Worker.addWorker(worker);
+
+            ctx.telegram.sendMessage(ctx.message.chat.id, messages.DEFAULT_MENU(worker), workingPlaceBoard);
+        } else {
+            ctx.telegram.sendMessage(ctx.message.chat.id, "Упс...🥺Код неверный⛔.");
+        }
+    } finally {
+        return ctx.scene.leave()
     }
-
-    return ctx.scene.leave()
 }
 
 module.exports.loginScene = new Scenes.WizardScene('loginScene', inputCode, checkCode);
