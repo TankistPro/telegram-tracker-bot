@@ -13,8 +13,7 @@ class Timer {
     startWork(worker) {
         const workerTimer = state.getStateTimer(worker.id_user);
 
-        if(workerTimer.seconds < 59) workerTimer.seconds++;
-
+        if(workerTimer.seconds < 59) workerTimer.seconds += 5;
         else {
             workerTimer.seconds = 0;
             workerTimer.minutes++;

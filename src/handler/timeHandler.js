@@ -15,11 +15,11 @@ module.exports.startTimer = async(ctx) => {
         return;
     }
 
-    ctx.editMessageText(messages.WORKING_MENU(worker, timer.startWork(worker)), workingPlaceBoard);
-    
+    ctx.editMessageText(messages.WORKING_MENU(worker, '00:00:00'), workingPlaceBoard);
+
     const timerId = setInterval(() => {
         ctx.editMessageText(messages.WORKING_MENU(worker, timer.startWork(worker)), workingPlaceBoard);
-    }, 1000)
+    }, 5000)
 
     await Worker.startWorking(worker, timerId);
 
