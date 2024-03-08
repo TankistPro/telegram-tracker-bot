@@ -42,13 +42,14 @@ class State {
 
     getStateTimer(key) {
         const timer = this.state[key]?.timer;
-        
+
         if (!timer) {
             this.addToState(key);
         }
 
         return this.state[key].timer;
     }
+
 }
 
 module.exports.state = new State();
