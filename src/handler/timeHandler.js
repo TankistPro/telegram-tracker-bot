@@ -15,11 +15,12 @@ module.exports.startTimer = async(ctx) => {
         return;
     }
 
-    ctx.editMessageText(messages.WORKING_MENU(worker, '00:00:00'), workingPlaceBoard);
+    const time = state.getStateTimer(worker.id_user);
+    ctx.editMessageText(messages.WORKING_MENU(worker, timer.displayTimer(time)), workingPlaceBoard);
 
     const timerId = setInterval(() => {
         ctx.editMessageText(messages.WORKING_MENU(worker, timer.startWork(worker)), workingPlaceBoard);
-    }, 5000)
+    }, 60000)
 
     await Worker.startWorking(worker, timerId);
 
@@ -64,7 +65,7 @@ module.exports.stopTimer = async(ctx) => {
 module.exports.updateStatistics = async(ctx) => {
     const user_id = ctx.from.id;
     const worker = await Worker.getWorkerById(user_id);
-    
+
     ctx.editMessageText(messages.DEFAULT_MENU(worker), workingPlaceBoard).catch((err) => {});
     ctx.answerCbQuery('Статистика успешно обновлена');
 }

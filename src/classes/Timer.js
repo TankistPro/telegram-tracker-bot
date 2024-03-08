@@ -1,7 +1,7 @@
 const { statistics } = require('./Statisctics');
 const { state } = require('../classes/State');
 
-class Timer {    
+class Timer {
     timeFormat(time) {
         return time < 10 ? "0" + time : time;
     }
@@ -13,16 +13,11 @@ class Timer {
     startWork(worker) {
         const workerTimer = state.getStateTimer(worker.id_user);
 
-        if(workerTimer.seconds != 55) workerTimer.seconds += 5;
+        if(workerTimer.minutes != 59) workerTimer.minutes += 1;
         else {
-            workerTimer.seconds = 0;
-            workerTimer.minutes++;
-        }
-        if(workerTimer.minutes === 60) {
             workerTimer.hours++;
             workerTimer.minutes = 0;
         }
-
         return this.displayTimer(workerTimer);
     }
 
