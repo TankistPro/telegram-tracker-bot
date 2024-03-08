@@ -19,7 +19,9 @@ module.exports.startTimer = async(ctx) => {
     ctx.editMessageText(messages.WORKING_MENU(worker, timer.displayTimer(time)), workingPlaceBoard);
 
     const timerId = setInterval(() => {
-        ctx.editMessageText(messages.WORKING_MENU(worker, timer.startWork(worker)), workingPlaceBoard);
+        const workerTimer = state.getStateTimer(worker.id_user);
+        timer.startWork(worker);
+        ctx.editMessageText(messages.WORKING_MENU(worker, timer.displayTimer(workerTimer)), workingPlaceBoard);
     }, 60000)
 
     await Worker.startWorking(worker, timerId);
@@ -66,6 +68,14 @@ module.exports.updateStatistics = async(ctx) => {
     const user_id = ctx.from.id;
     const worker = await Worker.getWorkerById(user_id);
 
-    ctx.editMessageText(messages.DEFAULT_MENU(worker), workingPlaceBoard).catch((err) => {});
+    if (worker.isWorking) {
+        const workerTimer = state.getStateTimer(worker.id_user);
+        ctx.editMessageText(messages.WORKING_MENU(worker, timer.displayTimer(workerTimer)), workingPlaceBoard).catch((err) => {});
+    } else if (worker.isPause){
+        ctx.editMessageText(messages.DEFAULT_MENU(worker), workingPlaceBoard).catch((err) => {});
+    } else {
+        ctx.editMessageText(messages.DEFAULT_MENU(worker), workingPlaceBoard).catch((err) => {});
+    }
+
     ctx.answerCbQuery('Статистика успешно обновлена');
 }

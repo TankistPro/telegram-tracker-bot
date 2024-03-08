@@ -18,7 +18,6 @@ class Timer {
             workerTimer.hours++;
             workerTimer.minutes = 0;
         }
-        return this.displayTimer(workerTimer);
     }
 
     pauseWork(worker) {

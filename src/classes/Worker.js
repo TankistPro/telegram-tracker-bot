@@ -33,7 +33,7 @@ class Worker {
         }
 
         const newWorker = new userModel(model);
-            
+
         await newWorker.save().then(res => {
             console.log("[OK] Пользователь успешно добавлен");
         })
@@ -53,7 +53,7 @@ class Worker {
     }
 
     async startWorking (worker, timerId) {
-        await userModel.updateOne({ id_user: worker.id_user }, { 
+        await userModel.updateOne({ id_user: worker.id_user }, {
             $set: { isWorking: true, isPause: false }
         })
 
@@ -61,7 +61,7 @@ class Worker {
     }
 
     async pauseWorking (worker) {
-        await userModel.updateOne({ id_user: worker.id_user }, { 
+        await userModel.updateOne({ id_user: worker.id_user }, {
             $set: { isWorking: false, isPause: true }
         })
 
@@ -69,7 +69,7 @@ class Worker {
     }
 
     async stopWorking (worker) {
-        await userModel.updateOne({ id_user: worker.id_user }, { 
+        await userModel.updateOne({ id_user: worker.id_user }, {
             $set: { isWorking: false, isPause: false }
         })
 
