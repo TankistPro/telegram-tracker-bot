@@ -3,6 +3,7 @@ const { createRandomKey } = require('../utils/getRandomCode');
 const { timer } = require('../classes/Timer');
 
 const { state } = require('../classes/State');
+const {pinoLogger} = require("../logger/pino");
 
 class Worker {
     async getWorkerById (id) {
@@ -35,7 +36,7 @@ class Worker {
         const newWorker = new userModel(model);
 
         await newWorker.save().then(res => {
-            console.log("[OK] Пользователь успешно добавлен");
+            pinoLogger.info('Создан новый пользователь', newWorker);
         })
 
         state.addToState(model.id_user);
@@ -58,6 +59,8 @@ class Worker {
         })
 
         state.setTimerId(worker.id_user, timerId);
+
+        pinoLogger.info({worker, timerId}, 'Пользователь начал рабоать');
     }
 
     async pauseWorking (worker) {
@@ -66,6 +69,8 @@ class Worker {
         })
 
         timer.pauseWork(worker);
+
+        pinoLogger.info({worker, timer: state.getStateTimer(worker.id_user)}, 'Таймер поставлен на паузу');
     }
 
     async stopWorking (worker) {
@@ -74,6 +79,8 @@ class Worker {
         })
 
         await timer.stopTimer(worker);
+
+        pinoLogger.info({worker, timer: state.getStateTimer(worker.id_user)}, 'Пользователь закончил работать');
     }
 }
 
