@@ -5,7 +5,6 @@ const { userModel } = require('../db/models/userModel');
 const { Scenes } = require('telegraf');
 const { Worker } = require('../classes/Worker');
 
-
 const inputCode = async (ctx) => {
     await ctx.reply("Введите 6-ый код:");
     return ctx.wizard.next();
