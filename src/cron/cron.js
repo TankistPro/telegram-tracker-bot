@@ -1,6 +1,18 @@
 const cronJob = require('cron').CronJob;
 
 const { statistics } = require('../classes/Statisctics');
+const { Worker } = require('../classes/Worker');
+
+const updateAdminListJob = new cronJob(
+    '*/15 * * * *',
+    async function () {
+        await Worker.getAdmins();
+        console.log('Список админов успешно обновлен!');
+	},
+    null,
+    false,
+    'Europe/Moscow'
+)
 
 const dayJob = new cronJob(
     '00 00 00 * * *',
@@ -36,6 +48,7 @@ const monthJob = new cronJob(
 )
 
 module.exports = {
+    updateAdminListJob,
     dayJob,
     weekJob,
     monthJob

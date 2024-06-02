@@ -1,4 +1,3 @@
-const { statistics } = require('./Statisctics');
 const { state } = require('../classes/State');
 
 class Timer {
@@ -33,11 +32,7 @@ class Timer {
 
     async stopTimer(worker) {
         state.clearTimerId(worker.id_user);
-        const timer = state.getStateTimer(worker.id_user);
-
         state.restoreTimer(worker.id_user);
-
-        await statistics.saveWorkingTime(worker, timer.hours, timer.minutes, timer.seconds);
     }
 }
 

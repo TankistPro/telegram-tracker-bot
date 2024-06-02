@@ -12,7 +12,8 @@ const userModel = new Schema({
     timeWeek: Number,
     timeMonth: Number,
     dataAuth: Date,
-    chat_id: Number
+    chat_id: Number,
+    isAdmin: Boolean,
 });
 
 module.exports.userModel = mongoose.model("trackUser", userModel);

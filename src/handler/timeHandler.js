@@ -30,7 +30,7 @@ module.exports.startTimer = async(ctx) => {
             }
         }, 1000)
 
-        await Worker.startWorking(worker, timerId);
+        await Worker.startWorking(ctx, worker, timerId);
 
         ctx.answerCbQuery('Вы начали работать');
     } catch (e) {
@@ -48,7 +48,7 @@ module.exports.pauseTimer = async(ctx) => {
             return;
         }
 
-        await Worker.pauseWorking(worker);
+        await Worker.pauseWorking(ctx, worker);
 
         const time = state.getStateTimer(worker.id_user)
 
@@ -69,9 +69,9 @@ module.exports.stopTimer = async(ctx) => {
             ctx.answerCbQuery('Вы не начинали работать');
             return;
         }
-        if (worker.isWorking) await Worker.pauseWorking(worker);
+        if (worker.isWorking) await Worker.pauseWorking(ctx, worker);
 
-        await Worker.stopWorking(worker);
+        await Worker.stopWorking(ctx, worker);
         worker = await Worker.getWorkerById(user_id);
 
         ctx.editMessageText(messages.DEFAULT_MENU(worker), workingPlaceBoard);

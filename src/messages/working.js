@@ -41,3 +41,19 @@ module.exports.PAUSE_MENU = (userData, workerTimer) => {
 `
 }
 
+module.exports.USER_START_WORKING = (userData) => {
+    return `💻 Пользователь ${userData.fisrtName || userData.userName} начал(-a) работать ${ (new Date()).toLocaleString('ru-RU')}.`
+}
+
+module.exports.USER_END_WORKING = (userData, workerTimer) => {
+    return `
+💻 Пользователь ${userData.fisrtName || userData.userName} закончил(-a) работать в ${ (new Date()).toLocaleString('ru-RU')}.
+🧠Отработано: ${timer.timeFormat(workerTimer.hours)}:${timer.timeFormat(workerTimer.minutes)}:${timer.timeFormat(workerTimer.seconds)}`
+}
+
+module.exports.USER_PAUSE_WORKING = (userData, workerTimer) => {
+    return `
+💻 Пользователь ${userData.fisrtName || userData.userName} поставил на паузу таймер в ${ (new Date()).toLocaleString('ru-RU')}.
+⌛ Уже отработано: ${timer.timeFormat(workerTimer.hours)}:${timer.timeFormat(workerTimer.minutes)}:${timer.timeFormat(workerTimer.seconds)}`
+}
+

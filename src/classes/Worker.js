@@ -1,11 +1,19 @@
 const { userModel } = require('../db/models/userModel');
 const { createRandomKey } = require('../utils/getRandomCode');
 const { timer } = require('../classes/Timer');
-
+const { statistics } = require('./Statisctics');
 const { state } = require('../classes/State');
 const {pinoLogger} = require("../logger/pino");
 
+const messages = require('../messages/working');
+
 class Worker {
+    adminList = [];
+
+    constructor() {
+        this.getAdmins();
+    }
+
     async getWorkerById (id) {
         const worker = await userModel.findOne({ id_user: id });
 
@@ -50,38 +58,60 @@ class Worker {
 
     addWorker (worker) {
         state.addToState(worker.id_user);
-
-        console.log(state);
     }
 
-    async startWorking (worker, timerId) {
+    async startWorking (ctx, worker, timerId) {
         await userModel.updateOne({ id_user: worker.id_user }, {
             $set: { isWorking: true, isPause: false }
         })
 
         state.setTimerId(worker.id_user, timerId);
 
-        pinoLogger.info({worker, timerId}, 'Пользователь начал рабоать');
+        this.adminList.forEach(admin => {
+            if(admin.id_user !== worker.id_user) { 
+                ctx.telegram.sendMessage(admin.chat_id, messages.USER_START_WORKING(worker));
+            }
+        });
     }
 
-    async pauseWorking (worker) {
+    async pauseWorking (ctx, worker) {
         await userModel.updateOne({ id_user: worker.id_user }, {
             $set: { isWorking: false, isPause: true }
         })
 
         timer.pauseWork(worker);
 
-        pinoLogger.info({worker, timer: state.getStateTimer(worker.id_user)}, 'Таймер поставлен на паузу');
+        const workerTimer = state.getStateTimer(worker.id_user);
+        this.adminList.forEach(admin => {
+            if(admin.id_user !== worker.id_user) { 
+                ctx.telegram.sendMessage(admin.chat_id, messages.USER_PAUSE_WORKING(worker, workerTimer));
+            }
+        });
     }
 
-    async stopWorking (worker) {
+    async stopWorking (ctx, worker) {
         await userModel.updateOne({ id_user: worker.id_user }, {
             $set: { isWorking: false, isPause: false }
         })
 
+        const workerTimer = state.getStateTimer(worker.id_user);
+        await statistics.saveWorkingTime(worker, workerTimer.hours, workerTimer.minutes, workerTimer.seconds);
+
         await timer.stopTimer(worker);
 
-        pinoLogger.info({worker, timer: state.getStateTimer(worker.id_user)}, 'Пользователь закончил работать');
+        this.adminList.forEach(admin => {
+            if(admin.id_user !== worker.id_user) {
+                ctx.telegram.sendMessage(admin.chat_id, messages.USER_END_WORKING(worker, workerTimer));
+            }
+        });
+    }
+
+    async isUserAdmin(workerID) {
+        return this.adminList.find(admin => admin.id_user === workerID);
+    }
+
+    async getAdmins () {
+        this.adminList = await userModel.find({ isAdmin: true});
     }
 }
 

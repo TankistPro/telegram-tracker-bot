@@ -49,7 +49,6 @@ class State {
 
         return this.state[key].timer;
     }
-
 }
 
 module.exports.state = new State();

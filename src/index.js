@@ -7,7 +7,7 @@ const loginScene = require('./scenes/logInScene').loginScene;
 const authHandler = require('./handler/authHandler');
 const timehandler = require('./handler/timeHandler');
 
-const { dayJob, monthJob, weekJob }= require('./cron/cron');
+const { updateAdminListJob, dayJob, monthJob, weekJob }= require('./cron/cron');
 
 const { logInKeyBoard } = require('./utils/keyBoards');
 const { checkUserChatID } = require('./middleware/middleware');
@@ -37,6 +37,7 @@ mongoDB.connectDB().then(res => {
     bot.launch().then(res => {
         console.log("[OK] Bot started succesfully!");
 
+        updateAdminListJob.start();
         dayJob.start();
         weekJob.start();
         monthJob.start();
