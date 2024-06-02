@@ -11,7 +11,8 @@ const userModel = new Schema({
     timeDay: Number,
     timeWeek: Number,
     timeMonth: Number,
-    dataAuth: Date
+    dataAuth: Date,
+    chat_id: Number
 });
 
 module.exports.userModel = mongoose.model("trackUser", userModel);

@@ -30,7 +30,8 @@ class Worker {
             },
             dataAuth: Date.now(),
             isWorking: false,
-            isPause: false
+            isPause: false,
+            chat_id: ctx.message.chat.id
         }
 
         const newWorker = new userModel(model);

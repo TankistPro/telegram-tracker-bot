@@ -10,11 +10,13 @@ const timehandler = require('./handler/timeHandler');
 const { dayJob, monthJob, weekJob }= require('./cron/cron');
 
 const { logInKeyBoard } = require('./utils/keyBoards');
+const { checkUserChatID } = require('./middleware/middleware');
 
 const stage = new Scenes.Stage([ loginScene ]);
 
 bot.use(session());
 bot.use(stage.middleware());
+bot.use(checkUserChatID)
 
 bot.start(async (ctx) => {
     ctx.reply("Привет, я трекер-бот. Нажми «Войти», чтобы авторизоваться в системе.", logInKeyBoard)

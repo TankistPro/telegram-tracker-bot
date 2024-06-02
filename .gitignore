@@ -5,3 +5,6 @@ node_modules
 .env
 
 app.log
+.idea/modules.xml
+.idea/
+src/logger/logs
